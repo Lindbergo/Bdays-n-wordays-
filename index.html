@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Birthdays &amp; Workday Milestones</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -44,7 +46,13 @@
       max-width: calc(100vw - 32px);
       box-shadow: 0 24px 64px rgba(0,0,0,.3);
     }
-    .modal h2 { font-size: 1.15rem; margin-bottom: 6px; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .modal h2 { font-size: 1.15rem; }
+    .modal-close {
+      background: none; border: none; font-size: 1.2rem; line-height: 1;
+      color: var(--muted); cursor: pointer; padding: 2px 6px; border-radius: 4px;
+    }
+    .modal-close:hover { background: var(--bg); }
     .modal p  { color: var(--muted); font-size: .85rem; margin-bottom: 24px; line-height: 1.6; }
 
     .field       { margin-bottom: 14px; }
@@ -76,14 +84,15 @@
     }
     .h-title { font-size: .95rem; font-weight: 700; letter-spacing: -.01em; }
     .h-right  { display: flex; align-items: center; gap: 10px; }
-    .h-stamp  { font-size: .72rem; opacity: .6; }
+    .h-stamp  { font-size: .75rem; opacity: .8; }
     .btn-ghost {
       padding: 5px 13px; border: 1px solid rgba(255,255,255,.25);
       background: rgba(255,255,255,.1); color: #fff; border-radius: 6px;
       font-size: .78rem; font-family: inherit; cursor: pointer;
       transition: background .15s;
     }
-    .btn-ghost:hover { background: rgba(255,255,255,.2); }
+    .btn-ghost:hover    { background: rgba(255,255,255,.2); }
+    .btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
 
     /* ── Main ──────────────────────────────────────────────── */
     main { max-width: 1100px; margin: 0 auto; padding: 22px 20px 48px; }
@@ -118,12 +127,13 @@
     /* ── Card / Table ──────────────────────────────────────── */
     .card {
       background: var(--surface); border-radius: 10px;
-      border: 1px solid var(--border); overflow: hidden;
+      border: 1px solid var(--border);
       box-shadow: 0 1px 4px rgba(0,0,0,.04);
     }
     .card-head {
       padding: 14px 20px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 10px;
+      border-radius: 10px 10px 0 0;
     }
     .card-head h2 { font-size: .88rem; font-weight: 600; flex: 1; }
     .pill {
@@ -138,6 +148,7 @@
       font-size: .68rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: .07em; color: var(--muted);
       background: #fafafa; border-bottom: 1px solid var(--border);
+      position: sticky; top: 56px; z-index: 10;
     }
     tbody td {
       padding: 12px 18px; border-bottom: 1px solid var(--border);
@@ -156,8 +167,7 @@
     .b-warm     { background: #fff3bf; color: #7c4f00; }
     .b-cool     { background: #dbe4ff; color: #364fc7; }
     .b-done     { background: #d3f9d8; color: #1a5c27; }
-    .b-inactive { background: #f3f4f6; color: #6b7280; font-size: .68rem; }
-    .b-ms       { background: var(--blue); color: #fff; font-size: .72rem; }
+.b-ms       { background: var(--blue); color: #fff; font-size: .72rem; }
 
     /* ── Progress bar ──────────────────────────────────────── */
     .prog-wrap { display: flex; align-items: center; gap: 8px; }
@@ -187,6 +197,42 @@
     .mono { font-family: ui-monospace, "SFMono-Regular", monospace; }
     .dim  { color: var(--muted); }
     .hidden { display: none !important; }
+
+    /* ── Search ─────────────────────────────────────────────────── */
+    .toolbar-right { display: flex; align-items: center; gap: 12px; }
+    .search-wrap   { position: relative; }
+    .search-icon   {
+      position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); font-size: .8rem; pointer-events: none;
+    }
+    .search-input {
+      padding: 6px 10px 6px 28px;
+      border: 1.5px solid var(--border); border-radius: 7px;
+      font-size: .83rem; font-family: inherit; color: var(--text);
+      background: var(--surface); width: 190px; transition: border-color .15s;
+    }
+    .search-input:focus { outline: none; border-color: var(--blue); }
+
+    /* ── Day-filter buttons ─────────────────────────────────────── */
+    .filter-btns { display: flex; gap: 2px; }
+    .filter-btn  {
+      padding: 3px 9px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--muted);
+      border-radius: 5px; font-size: .73rem; font-family: inherit;
+      cursor: pointer; transition: all .15s;
+    }
+    .filter-btn:hover:not(.active) { background: var(--bg); }
+    .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    /* ── Export button ──────────────────────────────────────────── */
+    .btn-export {
+      padding: 4px 11px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--muted);
+      border-radius: 6px; font-size: .75rem; font-family: inherit;
+      cursor: pointer; transition: all .15s; white-space: nowrap;
+    }
+    .btn-export:hover    { background: var(--bg); border-color: var(--blue); color: var(--blue); }
+    .btn-export:disabled { opacity: .4; cursor: not-allowed; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -194,17 +240,14 @@
 <!-- ── Setup overlay ─────────────────────────────────────────── -->
 <div id="overlay">
   <div class="modal">
-    <h2>Connect to Evity</h2>
-    <p>
-      Enter your Evity API credentials. They are saved locally in your browser
-      and never sent anywhere except directly to your Evity API.
-    </p>
-    <div class="field">
-      <label>API Base URL</label>
-      <input id="i-url" type="text" placeholder="https://api.evity.com"
-             autocomplete="off" spellcheck="false" />
-      <div class="hint">Root URL without trailing slash</div>
+    <div class="modal-header">
+      <h2>Connect to Evity</h2>
+      <button class="modal-close" id="closeModal" aria-label="Close">✕</button>
     </div>
+    <p>
+      Enter your Evity API key. It is saved locally in your browser
+      and never sent anywhere except directly to the Evity API.
+    </p>
     <div class="field">
       <label>API Key (X-Api-Key)</label>
       <input id="i-key" type="password" placeholder="Paste your API key here"
@@ -233,7 +276,14 @@
       <button class="tab active" data-tab="bd">🎂 Birthday Milestones</button>
       <button class="tab"        data-tab="wd">📅 Workday Milestones</button>
     </div>
-    <span id="empCount" class="dim" style="font-size:.78rem"></span>
+    <div class="toolbar-right">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" id="searchInput" type="search"
+               placeholder="Filter by name…" autocomplete="off" />
+      </div>
+      <span id="empCount" class="dim" style="font-size:.78rem"></span>
+    </div>
   </div>
 
   <!-- Birthday panel -->
@@ -242,6 +292,13 @@
       <div class="card-head">
         <h2>Upcoming milestone birthdays (20 – 70 years)</h2>
         <span class="pill" id="bdPill">—</span>
+        <div class="filter-btns">
+          <button class="filter-btn" data-days="30">30d</button>
+          <button class="filter-btn" data-days="90">90d</button>
+          <button class="filter-btn" data-days="365">1y</button>
+          <button class="filter-btn active" data-days="all">All</button>
+        </div>
+        <button class="btn-export" id="exportBd" disabled>↓ xlsx</button>
       </div>
       <table>
         <thead>
@@ -267,6 +324,7 @@
       <div class="card-head">
         <h2>Progress to 1 000 employment days</h2>
         <span class="pill" id="wdPill">—</span>
+        <button class="btn-export" id="exportWd" disabled>↓ xlsx</button>
       </div>
       <table>
         <thead>
@@ -293,35 +351,50 @@
 const BD_MILESTONES = [20, 30, 40, 50, 60, 70];
 const WD_TARGET     = 1000;
 
+// ── Client state ──────────────────────────────────────────────
+let allEmployees = [];
+let bdDaysFilter = Infinity;
+let searchQuery  = '';
+let lastBdRows   = [];
+let lastWdRows   = [];
+let isLoading    = false;
+
 // ── Config (localStorage) ─────────────────────────────────────
+const API_URL = 'https://evity-api.azurewebsites.net';
+
 const cfg = {
-  get url() { return (localStorage.getItem('ev_url') || '').replace(/\/$/, ''); },
   get key() { return localStorage.getItem('ev_key') || ''; },
-  save(url, key) {
-    localStorage.setItem('ev_url', url.replace(/\/$/, ''));
-    localStorage.setItem('ev_key', key);
-  },
-  ok() { return !!(this.url && this.key); }
+  save(key) { localStorage.setItem('ev_key', key); },
+  ok() { return !!this.key; }
 };
 
 // ── Overlay / settings ────────────────────────────────────────
 const overlay = document.getElementById('overlay');
 
 function showSettings() {
-  document.getElementById('i-url').value = cfg.url;
   document.getElementById('i-key').value = cfg.key;
   overlay.classList.remove('hidden');
 }
 
-document.getElementById('settingsBtn').addEventListener('click', showSettings);
+function closeSettings() {
+  if (cfg.ok()) overlay.classList.add('hidden');
+}
 
-document.getElementById('saveBtn').addEventListener('click', () => {
-  const url = document.getElementById('i-url').value.trim();
+document.getElementById('settingsBtn').addEventListener('click', showSettings);
+document.getElementById('closeModal').addEventListener('click', closeSettings);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeSettings(); });
+
+function submitSettings() {
   const key = document.getElementById('i-key').value.trim();
-  if (!url || !key) { alert('Both fields are required.'); return; }
-  cfg.save(url, key);
+  if (!key) { alert('API key is required.'); return; }
+  cfg.save(key);
   overlay.classList.add('hidden');
   loadAll();
+}
+
+document.getElementById('saveBtn').addEventListener('click', submitSettings);
+document.getElementById('i-key').addEventListener('keydown', e => {
+  if (e.key === 'Enter') submitSettings();
 });
 
 // ── Tabs ──────────────────────────────────────────────────────
@@ -336,13 +409,75 @@ document.querySelectorAll('.tab').forEach(btn => {
 
 document.getElementById('refreshBtn').addEventListener('click', loadAll);
 
+// ── Search ────────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  if (allEmployees.length) applyFilters();
+});
+
+// ── Day filter ────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    bdDaysFilter = btn.dataset.days === 'all' ? Infinity : parseInt(btn.dataset.days);
+    if (allEmployees.length) renderBirthdays(getFiltered());
+  });
+});
+
+// ── Export ────────────────────────────────────────────────────
+document.getElementById('exportBd').addEventListener('click', () => {
+  if (!lastBdRows.length) return;
+  const ws = XLSX.utils.json_to_sheet(lastBdRows.map(r => ({
+    'Name':           r.name,
+    'Date of Birth':  fmtDate(r.dob),
+    'Age Today':      r.currentAge,
+    'Turning':        r.milestoneAge,
+    'Milestone Date': fmtDate(r.milestoneDate),
+    'Days Away':      r.daysUntil
+  })));
+  ws['!cols'] = [{ wch: 26 }, { wch: 14 }, { wch: 10 }, { wch: 8 }, { wch: 14 }, { wch: 10 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Birthday Milestones');
+  XLSX.writeFile(wb, 'birthday-milestones.xlsx');
+});
+
+document.getElementById('exportWd').addEventListener('click', () => {
+  if (!lastWdRows.length) return;
+  const ws = XLSX.utils.json_to_sheet(lastWdRows.map(r => ({
+    'Name':                r.name,
+    'Days Worked':         r.days,
+    'Progress %':          Math.min(100, Math.round((r.days / WD_TARGET) * 100)),
+    'Days Remaining':      Math.max(0, r.remaining),
+    'Est. Milestone Date': r.remaining <= 0 ? 'Reached' : (r.projDate ? fmtDate(r.projDate) : '—')
+  })));
+  ws['!cols'] = [{ wch: 26 }, { wch: 12 }, { wch: 12 }, { wch: 14 }, { wch: 20 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Workday Milestones');
+  XLSX.writeFile(wb, 'workday-milestones.xlsx');
+});
+
+// ── Filter helpers ────────────────────────────────────────────
+function getFiltered() {
+  const q = searchQuery.toLowerCase();
+  return q
+    ? allEmployees.filter(e => fullName(e.personDetails).toLowerCase().includes(q))
+    : allEmployees;
+}
+
+function applyFilters() {
+  const emps = getFiltered();
+  renderBirthdays(emps);
+  renderWorkdays(emps);
+}
+
 // ── API: fetch all employees (handles pagination) ─────────────
 async function fetchAll() {
   const all = [];
   let page = 0;
 
   for (;;) {
-    const res = await fetch(`${cfg.url}/Employee/GetAll_V2?page=${page}`, {
+    const res = await fetch(`${API_URL}/Employee/GetAll_V2?page=${page}`, {
       headers: {
         'X-Api-Key':     cfg.key,
         'X-Api-Version': '1.0',
@@ -377,11 +512,16 @@ function daysBetween(a, b) {
   return Math.round((b - a) / 86_400_000);
 }
 
+function clampedDate(year, month, day) {
+  const lastDay = new Date(year, month + 1, 0).getDate();
+  return new Date(year, month, Math.min(day, lastDay));
+}
+
 function currentAge(dob) {
   const t = todayMidnight();
   const b = new Date(dob);
   let age = t.getFullYear() - b.getFullYear();
-  if (t < new Date(t.getFullYear(), b.getMonth(), b.getDate())) age--;
+  if (t < clampedDate(t.getFullYear(), b.getMonth(), b.getDate())) age--;
   return age;
 }
 
@@ -389,7 +529,7 @@ function nextBdMilestone(dob) {
   const t = todayMidnight();
   const b = new Date(dob);
   for (const m of BD_MILESTONES) {
-    const d    = new Date(b.getFullYear() + m, b.getMonth(), b.getDate());
+    const d    = clampedDate(b.getFullYear() + m, b.getMonth(), b.getDate());
     const days = daysBetween(t, d);
     if (days >= 0) return { milestoneAge: m, milestoneDate: d, daysUntil: days };
   }
@@ -451,7 +591,6 @@ function renderBirthdays(employees) {
     if (!ms) continue;
     rows.push({
       name:         fullName(emp.personDetails),
-      inService:    emp.inService,
       dob,
       currentAge:   currentAge(dob),
       milestoneAge: ms.milestoneAge,
@@ -462,20 +601,21 @@ function renderBirthdays(employees) {
 
   rows.sort((a, b) => a.daysUntil - b.daysUntil);
 
-  document.getElementById('bdPill').textContent = rows.length + ' people';
+  const visible = bdDaysFilter === Infinity ? rows : rows.filter(r => r.daysUntil <= bdDaysFilter);
+  lastBdRows = visible;
+
+  document.getElementById('bdPill').textContent = visible.length + ' people';
   const tbody = document.getElementById('bdBody');
   tbody.innerHTML = '';
 
-  if (!rows.length) {
+  if (!visible.length) {
     tbody.innerHTML = `<tr class="state-row"><td colspan="6">No upcoming milestone birthdays found.</td></tr>`;
     return;
   }
 
-  for (const r of rows) {
+  for (const r of visible) {
     const [cls, lbl] = daysAwayBadge(r.daysUntil);
-    const namePart = r.inService
-      ? `<span class="fw6">${esc(r.name)}</span>`
-      : `<span class="fw6 dim">${esc(r.name)}</span> <span class="badge b-inactive">inactive</span>`;
+    const namePart = `<span class="fw6">${esc(r.name)}</span>`;
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -500,7 +640,6 @@ function renderWorkdays(employees) {
     const days = totalEmployedDays(hs);
     rows.push({
       name:      fullName(emp.personDetails),
-      inService: emp.inService,
       days,
       remaining: WD_TARGET - days,
       projDate:  projMilestoneDate(hs, days)
@@ -509,6 +648,7 @@ function renderWorkdays(employees) {
 
   const under = rows.filter(r => r.remaining > 0).sort((a, b) => a.remaining - b.remaining);
   const over  = rows.filter(r => r.remaining <= 0).sort((a, b) => b.days - a.days);
+  lastWdRows  = [...under, ...over];
 
   document.getElementById('wdPill').textContent = rows.length + ' people';
   const tbody = document.getElementById('wdBody');
@@ -530,9 +670,7 @@ function renderWorkdays(employees) {
     const pct       = Math.min(100, (r.days / WD_TARGET) * 100);
     const [cls, lbl] = daysRemBadge(r.remaining);
     const isDone    = r.remaining <= 0;
-    const namePart  = r.inService
-      ? `<span class="fw6">${esc(r.name)}</span>`
-      : `<span class="fw6 dim">${esc(r.name)}</span> <span class="badge b-inactive">inactive</span>`;
+    const namePart  = `<span class="fw6">${esc(r.name)}</span>`;
     const projCell  = isDone
       ? '—'
       : (r.projDate ? `<span class="mono">${fmtDate(r.projDate)}</span>` : '<span class="dim">—</span>');
@@ -567,6 +705,12 @@ function renderWorkdays(employees) {
 
 // ── Load ──────────────────────────────────────────────────────
 function setLoading() {
+  isLoading    = true;
+  lastBdRows   = [];
+  lastWdRows   = [];
+  document.getElementById('refreshBtn').disabled = true;
+  document.getElementById('exportBd').disabled   = true;
+  document.getElementById('exportWd').disabled   = true;
   document.getElementById('bdBody').innerHTML =
     `<tr class="state-row"><td colspan="6"><div class="loader"></div></td></tr>`;
   document.getElementById('wdBody').innerHTML =
@@ -578,19 +722,24 @@ function setLoading() {
 
 async function loadAll() {
   if (!cfg.ok()) { showSettings(); return; }
+  if (isLoading) return;
   setLoading();
   try {
-    const employees = await fetchAll();
+    const all       = await fetchAll();
+    allEmployees    = all.filter(e =>
+      (e.status ?? '').toLowerCase() !== 'previous employee'
+    );
+    const excluded  = all.length - allEmployees.length;
     document.getElementById('empCount').textContent =
-      employees.length + ' employees loaded';
-    renderBirthdays(employees);
-    renderWorkdays(employees);
+      allEmployees.length + ' active employees' +
+      (excluded ? ` (${excluded} previous excluded)` : '');
+    applyFilters();
     document.getElementById('stamp').textContent =
       'Updated ' + new Date().toLocaleTimeString('sv-SE');
   } catch (err) {
     const isCors = err.message.toLowerCase().includes('failed to fetch');
     const msg = isCors
-      ? 'Could not reach the API. This is likely a CORS issue — the Evity API must allow browser requests. Check the base URL and try again.'
+      ? 'Could not reach the API — check that your API key is correct or contact your administrator.'
       : err.message;
     document.getElementById('errBox').textContent = '⚠ ' + msg;
     document.getElementById('errBox').classList.remove('hidden');
@@ -599,6 +748,11 @@ async function loadAll() {
     document.getElementById('wdBody').innerHTML =
       `<tr class="state-row"><td colspan="5">Failed to load data.</td></tr>`;
     console.error(err);
+  } finally {
+    isLoading = false;
+    document.getElementById('refreshBtn').disabled = false;
+    document.getElementById('exportBd').disabled   = lastBdRows.length === 0;
+    document.getElementById('exportWd').disabled   = lastWdRows.length === 0;
   }
 }
 
