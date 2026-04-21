@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthdays &amp; Workday Milestones</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #1e3a5f;
+      --blue-h:  #2d5186;
+      --green:   #2f9e44;
+      --bg:      #f3f4f6;
+      --surface: #ffffff;
+      --border:  #e5e7eb;
+      --muted:   #6b7280;
+      --text:    #111827;
+      --red:     #c92a2a;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* ── Overlay ───────────────────────────────────────────── */
+    #overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(3px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    #overlay.hidden { display: none; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 36px 32px;
+      width: 440px;
+      max-width: calc(100vw - 32px);
+      box-shadow: 0 24px 64px rgba(0,0,0,.3);
+    }
+    .modal h2 { font-size: 1.15rem; margin-bottom: 6px; }
+    .modal p  { color: var(--muted); font-size: .85rem; margin-bottom: 24px; line-height: 1.6; }
+
+    .field       { margin-bottom: 14px; }
+    .field label { display: block; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 5px; }
+    .field input {
+      width: 100%; padding: 9px 12px;
+      border: 1.5px solid var(--border); border-radius: 7px;
+      font-size: .9rem; font-family: inherit; color: var(--text);
+      transition: border-color .15s;
+    }
+    .field input:focus { outline: none; border-color: var(--blue); }
+    .field .hint { font-size: .72rem; color: var(--muted); margin-top: 4px; }
+
+    .btn-primary {
+      display: block; width: 100%; margin-top: 8px;
+      padding: 10px; border: none; border-radius: 7px;
+      background: var(--blue); color: #fff;
+      font-size: .9rem; font-weight: 600; font-family: inherit;
+      cursor: pointer; transition: background .15s;
+    }
+    .btn-primary:hover { background: var(--blue-h); }
+
+    /* ── Header ────────────────────────────────────────────── */
+    header {
+      height: 56px; background: var(--blue); color: #fff;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    .h-title { font-size: .95rem; font-weight: 700; letter-spacing: -.01em; }
+    .h-right  { display: flex; align-items: center; gap: 10px; }
+    .h-stamp  { font-size: .72rem; opacity: .6; }
+    .btn-ghost {
+      padding: 5px 13px; border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.1); color: #fff; border-radius: 6px;
+      font-size: .78rem; font-family: inherit; cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,.2); }
+
+    /* ── Main ──────────────────────────────────────────────── */
+    main { max-width: 1100px; margin: 0 auto; padding: 22px 20px 48px; }
+
+    .err {
+      background: #fff0f0; border: 1px solid #ffc9c9; border-radius: 8px;
+      padding: 13px 16px; color: var(--red); font-size: .85rem;
+      margin-bottom: 18px; line-height: 1.5;
+    }
+    .err.hidden { display: none; }
+
+    /* ── Toolbar ───────────────────────────────────────────── */
+    .toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px; flex-wrap: wrap; gap: 10px;
+    }
+    .tabs {
+      display: flex; gap: 2px;
+      background: var(--border); padding: 3px; border-radius: 9px;
+    }
+    .tab {
+      padding: 6px 18px; border: none; background: transparent;
+      border-radius: 6px; cursor: pointer;
+      font-size: .83rem; font-weight: 500; color: var(--muted);
+      font-family: inherit; transition: all .15s;
+    }
+    .tab.active {
+      background: var(--surface); color: var(--blue);
+      font-weight: 600; box-shadow: 0 1px 4px rgba(0,0,0,.09);
+    }
+
+    /* ── Card / Table ──────────────────────────────────────── */
+    .card {
+      background: var(--surface); border-radius: 10px;
+      border: 1px solid var(--border); overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .card-head {
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card-head h2 { font-size: .88rem; font-weight: 600; flex: 1; }
+    .pill {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2px 10px;
+      font-size: .72rem; color: var(--muted); font-weight: 500;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 10px 18px; text-align: left;
+      font-size: .68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted);
+      background: #fafafa; border-bottom: 1px solid var(--border);
+    }
+    tbody td {
+      padding: 12px 18px; border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #f9fbff; }
+
+    /* ── Badges ────────────────────────────────────────────── */
+    .badge {
+      display: inline-block; padding: 3px 9px; border-radius: 20px;
+      font-size: .73rem; font-weight: 600; white-space: nowrap;
+    }
+    .b-today    { background: #d3f9d8; color: #1a5c27; }
+    .b-hot      { background: #ffe3e3; color: #9b1c1c; }
+    .b-warm     { background: #fff3bf; color: #7c4f00; }
+    .b-cool     { background: #dbe4ff; color: #364fc7; }
+    .b-done     { background: #d3f9d8; color: #1a5c27; }
+    .b-inactive { background: #f3f4f6; color: #6b7280; font-size: .68rem; }
+    .b-ms       { background: var(--blue); color: #fff; font-size: .72rem; }
+
+    /* ── Progress bar ──────────────────────────────────────── */
+    .prog-wrap { display: flex; align-items: center; gap: 8px; }
+    .prog-bar  { flex: 0 0 100px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--blue); border-radius: 3px; }
+    .prog-fill.done { background: var(--green); }
+    .prog-pct  { font-size: .73rem; color: var(--muted); min-width: 34px; }
+
+    /* ── States ─────────────────────────────────────────────── */
+    .state-row td { text-align: center; padding: 52px 20px; color: var(--muted); }
+    .loader {
+      display: inline-block; width: 30px; height: 30px;
+      border: 3px solid var(--border); border-top-color: var(--blue);
+      border-radius: 50%; animation: spin .65s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Section divider inside table ──────────────────────── */
+    .section-div td {
+      background: var(--bg); padding: 5px 18px;
+      font-size: .68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .fw6  { font-weight: 600; }
+    .mono { font-family: ui-monospace, "SFMono-Regular", monospace; }
+    .dim  { color: var(--muted); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<!-- ── Setup overlay ─────────────────────────────────────────── -->
+<div id="overlay">
+  <div class="modal">
+    <h2>Connect to Evity</h2>
+    <p>
+      Enter your Evity API credentials. They are saved locally in your browser
+      and never sent anywhere except directly to your Evity API.
+    </p>
+    <div class="field">
+      <label>API Base URL</label>
+      <input id="i-url" type="text" placeholder="https://api.evity.com"
+             autocomplete="off" spellcheck="false" />
+      <div class="hint">Root URL without trailing slash</div>
+    </div>
+    <div class="field">
+      <label>API Key (X-Api-Key)</label>
+      <input id="i-key" type="password" placeholder="Paste your API key here"
+             autocomplete="off" />
+    </div>
+    <button class="btn-primary" id="saveBtn">Save &amp; Load Data</button>
+  </div>
+</div>
+
+<!-- ── Header ────────────────────────────────────────────────── -->
+<header>
+  <span class="h-title">🎂 Birthdays &amp; Workday Milestones</span>
+  <div class="h-right">
+    <span class="h-stamp" id="stamp"></span>
+    <button class="btn-ghost" id="refreshBtn">↻ Refresh</button>
+    <button class="btn-ghost" id="settingsBtn">⚙ Settings</button>
+  </div>
+</header>
+
+<!-- ── Main content ──────────────────────────────────────────── -->
+<main>
+  <div class="err hidden" id="errBox"></div>
+
+  <div class="toolbar">
+    <div class="tabs">
+      <button class="tab active" data-tab="bd">🎂 Birthday Milestones</button>
+      <button class="tab"        data-tab="wd">📅 Workday Milestones</button>
+    </div>
+    <span id="empCount" class="dim" style="font-size:.78rem"></span>
+  </div>
+
+  <!-- Birthday panel -->
+  <div id="p-bd">
+    <div class="card">
+      <div class="card-head">
+        <h2>Upcoming milestone birthdays (20 – 70 years)</h2>
+        <span class="pill" id="bdPill">—</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Age Today</th>
+            <th>Turning</th>
+            <th>Milestone Date</th>
+            <th>Days Away</th>
+          </tr>
+        </thead>
+        <tbody id="bdBody">
+          <tr class="state-row"><td colspan="6"><div class="loader"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Workdays panel -->
+  <div id="p-wd" class="hidden">
+    <div class="card">
+      <div class="card-head">
+        <h2>Progress to 1 000 employment days</h2>
+        <span class="pill" id="wdPill">—</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Days Worked</th>
+            <th>Progress to 1 000</th>
+            <th>Days Remaining</th>
+            <th>Est. Milestone Date</th>
+          </tr>
+        </thead>
+        <tbody id="wdBody">
+          <tr class="state-row"><td colspan="5"><div class="loader"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script>
+'use strict';
+
+// ── Constants ─────────────────────────────────────────────────
+const BD_MILESTONES = [20, 30, 40, 50, 60, 70];
+const WD_TARGET     = 1000;
+
+// ── Config (localStorage) ─────────────────────────────────────
+const cfg = {
+  get url() { return (localStorage.getItem('ev_url') || '').replace(/\/$/, ''); },
+  get key() { return localStorage.getItem('ev_key') || ''; },
+  save(url, key) {
+    localStorage.setItem('ev_url', url.replace(/\/$/, ''));
+    localStorage.setItem('ev_key', key);
+  },
+  ok() { return !!(this.url && this.key); }
+};
+
+// ── Overlay / settings ────────────────────────────────────────
+const overlay = document.getElementById('overlay');
+
+function showSettings() {
+  document.getElementById('i-url').value = cfg.url;
+  document.getElementById('i-key').value = cfg.key;
+  overlay.classList.remove('hidden');
+}
+
+document.getElementById('settingsBtn').addEventListener('click', showSettings);
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  const url = document.getElementById('i-url').value.trim();
+  const key = document.getElementById('i-key').value.trim();
+  if (!url || !key) { alert('Both fields are required.'); return; }
+  cfg.save(url, key);
+  overlay.classList.add('hidden');
+  loadAll();
+});
+
+// ── Tabs ──────────────────────────────────────────────────────
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('[id^="p-"]').forEach(p => p.classList.add('hidden'));
+    document.getElementById('p-' + btn.dataset.tab).classList.remove('hidden');
+  });
+});
+
+document.getElementById('refreshBtn').addEventListener('click', loadAll);
+
+// ── API: fetch all employees (handles pagination) ─────────────
+async function fetchAll() {
+  const all = [];
+  let page = 0;
+
+  for (;;) {
+    const res = await fetch(`${cfg.url}/Employee/GetAll_V2?page=${page}`, {
+      headers: {
+        'X-Api-Key':     cfg.key,
+        'X-Api-Version': '1.0',
+        'Accept':        'application/json'
+      }
+    });
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      throw new Error(`HTTP ${res.status}${body ? ' — ' + body.slice(0, 300) : ''}`);
+    }
+
+    const data  = await res.json();
+    const batch = data.employees ?? [];
+    all.push(...batch);
+
+    if (!data.nextPage || batch.length === 0) break;
+    page++;
+  }
+
+  return all;
+}
+
+// ── Date helpers ──────────────────────────────────────────────
+function todayMidnight() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function daysBetween(a, b) {
+  return Math.round((b - a) / 86_400_000);
+}
+
+function currentAge(dob) {
+  const t = todayMidnight();
+  const b = new Date(dob);
+  let age = t.getFullYear() - b.getFullYear();
+  if (t < new Date(t.getFullYear(), b.getMonth(), b.getDate())) age--;
+  return age;
+}
+
+function nextBdMilestone(dob) {
+  const t = todayMidnight();
+  const b = new Date(dob);
+  for (const m of BD_MILESTONES) {
+    const d    = new Date(b.getFullYear() + m, b.getMonth(), b.getDate());
+    const days = daysBetween(t, d);
+    if (days >= 0) return { milestoneAge: m, milestoneDate: d, daysUntil: days };
+  }
+  return null; // older than 70 — all milestones passed
+}
+
+function totalEmployedDays(histories) {
+  if (!histories?.length) return 0;
+  const t = todayMidnight();
+  return histories.reduce((acc, h) => {
+    const s = new Date(h.startDate);
+    const e = h.endDate ? new Date(h.endDate) : t;
+    return acc + Math.max(0, daysBetween(s, e));
+  }, 0);
+}
+
+function projMilestoneDate(histories, currentDays) {
+  const remaining = WD_TARGET - currentDays;
+  if (remaining <= 0) return null;
+  const active = (histories ?? []).find(h => !h.endDate);
+  if (!active) return null;
+  const t = todayMidnight();
+  return new Date(t.getTime() + remaining * 86_400_000);
+}
+
+// ── Formatters ────────────────────────────────────────────────
+const fmtDate = d => (d instanceof Date ? d : new Date(d)).toLocaleDateString('sv-SE');
+
+function esc(s) {
+  return (s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function fullName(p) {
+  return [p?.firstName, p?.lastName].filter(Boolean).join(' ');
+}
+
+function daysAwayBadge(days) {
+  if (days === 0)   return ['b-today', 'Today! 🎉'];
+  if (days <= 30)   return ['b-hot',   days + ' days'];
+  if (days <= 90)   return ['b-warm',  days + ' days'];
+  return               ['b-cool',  days + ' days'];
+}
+
+function daysRemBadge(rem) {
+  if (rem <= 0)   return ['b-done', 'Reached! 🎉'];
+  if (rem <= 30)  return ['b-hot',  rem + ' days'];
+  if (rem <= 90)  return ['b-warm', rem + ' days'];
+  return             ['b-cool', rem + ' days'];
+}
+
+// ── Render: birthdays ─────────────────────────────────────────
+function renderBirthdays(employees) {
+  const rows = [];
+
+  for (const emp of employees) {
+    const dob = emp.personDetails?.dateOfBirth;
+    if (!dob) continue;
+    const ms = nextBdMilestone(dob);
+    if (!ms) continue;
+    rows.push({
+      name:         fullName(emp.personDetails),
+      inService:    emp.inService,
+      dob,
+      currentAge:   currentAge(dob),
+      milestoneAge: ms.milestoneAge,
+      milestoneDate: ms.milestoneDate,
+      daysUntil:    ms.daysUntil
+    });
+  }
+
+  rows.sort((a, b) => a.daysUntil - b.daysUntil);
+
+  document.getElementById('bdPill').textContent = rows.length + ' people';
+  const tbody = document.getElementById('bdBody');
+  tbody.innerHTML = '';
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr class="state-row"><td colspan="6">No upcoming milestone birthdays found.</td></tr>`;
+    return;
+  }
+
+  for (const r of rows) {
+    const [cls, lbl] = daysAwayBadge(r.daysUntil);
+    const namePart = r.inService
+      ? `<span class="fw6">${esc(r.name)}</span>`
+      : `<span class="fw6 dim">${esc(r.name)}</span> <span class="badge b-inactive">inactive</span>`;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${namePart}</td>
+      <td class="mono">${fmtDate(r.dob)}</td>
+      <td>${r.currentAge}</td>
+      <td><span class="badge b-ms">${r.milestoneAge}</span></td>
+      <td class="mono">${fmtDate(r.milestoneDate)}</td>
+      <td><span class="badge ${cls}">${lbl}</span></td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+// ── Render: workdays ──────────────────────────────────────────
+function renderWorkdays(employees) {
+  const rows = [];
+
+  for (const emp of employees) {
+    const hs = emp.employmentHistories;
+    if (!hs?.length) continue;
+    const days = totalEmployedDays(hs);
+    rows.push({
+      name:      fullName(emp.personDetails),
+      inService: emp.inService,
+      days,
+      remaining: WD_TARGET - days,
+      projDate:  projMilestoneDate(hs, days)
+    });
+  }
+
+  const under = rows.filter(r => r.remaining > 0).sort((a, b) => a.remaining - b.remaining);
+  const over  = rows.filter(r => r.remaining <= 0).sort((a, b) => b.days - a.days);
+
+  document.getElementById('wdPill').textContent = rows.length + ' people';
+  const tbody = document.getElementById('wdBody');
+  tbody.innerHTML = '';
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr class="state-row"><td colspan="5">No employment data found.</td></tr>`;
+    return;
+  }
+
+  const mkDivider = (text) => {
+    const tr = document.createElement('tr');
+    tr.className = 'section-div';
+    tr.innerHTML = `<td colspan="5">${text}</td>`;
+    return tr;
+  };
+
+  const mkRow = r => {
+    const pct       = Math.min(100, (r.days / WD_TARGET) * 100);
+    const [cls, lbl] = daysRemBadge(r.remaining);
+    const isDone    = r.remaining <= 0;
+    const namePart  = r.inService
+      ? `<span class="fw6">${esc(r.name)}</span>`
+      : `<span class="fw6 dim">${esc(r.name)}</span> <span class="badge b-inactive">inactive</span>`;
+    const projCell  = isDone
+      ? '—'
+      : (r.projDate ? `<span class="mono">${fmtDate(r.projDate)}</span>` : '<span class="dim">—</span>');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${namePart}</td>
+      <td><strong>${r.days.toLocaleString('sv-SE')}</strong></td>
+      <td>
+        <div class="prog-wrap">
+          <div class="prog-bar">
+            <div class="prog-fill ${isDone ? 'done' : ''}" style="width:${pct.toFixed(1)}%"></div>
+          </div>
+          <span class="prog-pct">${pct.toFixed(0)}%</span>
+        </div>
+      </td>
+      <td><span class="badge ${cls}">${lbl}</span></td>
+      <td>${projCell}</td>
+    `;
+    return tr;
+  };
+
+  if (under.length) {
+    tbody.appendChild(mkDivider(`On the way to 1 000 days — ${under.length} people`));
+    under.forEach(r => tbody.appendChild(mkRow(r)));
+  }
+  if (over.length) {
+    tbody.appendChild(mkDivider(`Already reached 1 000 days — ${over.length} people`));
+    over.forEach(r => tbody.appendChild(mkRow(r)));
+  }
+}
+
+// ── Load ──────────────────────────────────────────────────────
+function setLoading() {
+  document.getElementById('bdBody').innerHTML =
+    `<tr class="state-row"><td colspan="6"><div class="loader"></div></td></tr>`;
+  document.getElementById('wdBody').innerHTML =
+    `<tr class="state-row"><td colspan="5"><div class="loader"></div></td></tr>`;
+  document.getElementById('errBox').classList.add('hidden');
+  document.getElementById('errBox').textContent = '';
+  document.getElementById('empCount').textContent = '';
+}
+
+async function loadAll() {
+  if (!cfg.ok()) { showSettings(); return; }
+  setLoading();
+  try {
+    const employees = await fetchAll();
+    document.getElementById('empCount').textContent =
+      employees.length + ' employees loaded';
+    renderBirthdays(employees);
+    renderWorkdays(employees);
+    document.getElementById('stamp').textContent =
+      'Updated ' + new Date().toLocaleTimeString('sv-SE');
+  } catch (err) {
+    const isCors = err.message.toLowerCase().includes('failed to fetch');
+    const msg = isCors
+      ? 'Could not reach the API. This is likely a CORS issue — the Evity API must allow browser requests. Check the base URL and try again.'
+      : err.message;
+    document.getElementById('errBox').textContent = '⚠ ' + msg;
+    document.getElementById('errBox').classList.remove('hidden');
+    document.getElementById('bdBody').innerHTML =
+      `<tr class="state-row"><td colspan="6">Failed to load data.</td></tr>`;
+    document.getElementById('wdBody').innerHTML =
+      `<tr class="state-row"><td colspan="5">Failed to load data.</td></tr>`;
+    console.error(err);
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────
+if (cfg.ok()) {
+  loadAll();
+} else {
+  showSettings();
+}
+</script>
+</body>
+</html>
