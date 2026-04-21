@@ -44,7 +44,13 @@
       max-width: calc(100vw - 32px);
       box-shadow: 0 24px 64px rgba(0,0,0,.3);
     }
-    .modal h2 { font-size: 1.15rem; margin-bottom: 6px; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .modal h2 { font-size: 1.15rem; }
+    .modal-close {
+      background: none; border: none; font-size: 1.2rem; line-height: 1;
+      color: var(--muted); cursor: pointer; padding: 2px 6px; border-radius: 4px;
+    }
+    .modal-close:hover { background: var(--bg); }
     .modal p  { color: var(--muted); font-size: .85rem; margin-bottom: 24px; line-height: 1.6; }
 
     .field       { margin-bottom: 14px; }
@@ -83,7 +89,8 @@
       font-size: .78rem; font-family: inherit; cursor: pointer;
       transition: background .15s;
     }
-    .btn-ghost:hover { background: rgba(255,255,255,.2); }
+    .btn-ghost:hover    { background: rgba(255,255,255,.2); }
+    .btn-ghost:disabled { opacity: .4; cursor: not-allowed; }
 
     /* ── Main ──────────────────────────────────────────────── */
     main { max-width: 1100px; margin: 0 auto; padding: 22px 20px 48px; }
@@ -118,12 +125,13 @@
     /* ── Card / Table ──────────────────────────────────────── */
     .card {
       background: var(--surface); border-radius: 10px;
-      border: 1px solid var(--border); overflow: hidden;
+      border: 1px solid var(--border);
       box-shadow: 0 1px 4px rgba(0,0,0,.04);
     }
     .card-head {
       padding: 14px 20px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; gap: 10px;
+      border-radius: 10px 10px 0 0;
     }
     .card-head h2 { font-size: .88rem; font-weight: 600; flex: 1; }
     .pill {
@@ -195,7 +203,10 @@
 <!-- ── Setup overlay ─────────────────────────────────────────── -->
 <div id="overlay">
   <div class="modal">
-    <h2>Connect to Evity</h2>
+    <div class="modal-header">
+      <h2>Connect to Evity</h2>
+      <button class="modal-close" id="closeModal" aria-label="Close">✕</button>
+    </div>
     <p>
       Enter your Evity API key. It is saved locally in your browser
       and never sent anywhere except directly to the Evity API.
@@ -305,14 +316,25 @@ function showSettings() {
   overlay.classList.remove('hidden');
 }
 
-document.getElementById('settingsBtn').addEventListener('click', showSettings);
+function closeSettings() {
+  if (cfg.ok()) overlay.classList.add('hidden');
+}
 
-document.getElementById('saveBtn').addEventListener('click', () => {
+document.getElementById('settingsBtn').addEventListener('click', showSettings);
+document.getElementById('closeModal').addEventListener('click', closeSettings);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeSettings(); });
+
+function submitSettings() {
   const key = document.getElementById('i-key').value.trim();
   if (!key) { alert('API key is required.'); return; }
   cfg.save(key);
   overlay.classList.add('hidden');
   loadAll();
+}
+
+document.getElementById('saveBtn').addEventListener('click', submitSettings);
+document.getElementById('i-key').addEventListener('keydown', e => {
+  if (e.key === 'Enter') submitSettings();
 });
 
 // ── Tabs ──────────────────────────────────────────────────────
@@ -558,6 +580,7 @@ function renderWorkdays(employees) {
 
 // ── Load ──────────────────────────────────────────────────────
 function setLoading() {
+  document.getElementById('refreshBtn').disabled = true;
   document.getElementById('bdBody').innerHTML =
     `<tr class="state-row"><td colspan="6"><div class="loader"></div></td></tr>`;
   document.getElementById('wdBody').innerHTML =
@@ -586,7 +609,7 @@ async function loadAll() {
   } catch (err) {
     const isCors = err.message.toLowerCase().includes('failed to fetch');
     const msg = isCors
-      ? 'Could not reach the API. This is likely a CORS issue — the Evity API must allow browser requests. Check the base URL and try again.'
+      ? 'Could not reach the API — check that your API key is correct or contact your administrator.'
       : err.message;
     document.getElementById('errBox').textContent = '⚠ ' + msg;
     document.getElementById('errBox').classList.remove('hidden');
@@ -595,6 +618,8 @@ async function loadAll() {
     document.getElementById('wdBody').innerHTML =
       `<tr class="state-row"><td colspan="5">Failed to load data.</td></tr>`;
     console.error(err);
+  } finally {
+    document.getElementById('refreshBtn').disabled = false;
   }
 }
 
