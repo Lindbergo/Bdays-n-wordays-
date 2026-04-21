@@ -1,0 +1,4107 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Evity External API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/Calendar/CreateCalendar": {
+      "post": {
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateCalendarDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateCalendarDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateCalendarDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Calendar/UpdateCalendar/{calendarId}": {
+      "patch": {
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "calendarId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateCalendarDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateCalendarDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateCalendarDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Calendar/AddCalendarDatesToCalendar/{calendarId}": {
+      "post": {
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "calendarId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ExternalApiCreateCalendarDateDTO"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ExternalApiCreateCalendarDateDTO"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ExternalApiCreateCalendarDateDTO"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Calendar/DeleteCalendarDates/{calendarId}": {
+      "delete": {
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "calendarId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Calendar/UpdateCalendarDate/{calendarDateId}": {
+      "patch": {
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "calendarDateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateCalendarDateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateCalendarDateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateCalendarDateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Calendar/GetCalendar/{calendarId}": {
+      "get": {
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "calendarId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiCalendarDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiCalendarDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiCalendarDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Calendar/GetCalendars": {
+      "get": {
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiCalendarDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiCalendarDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiCalendarDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Calendar/AssignCalendarToPerson": {
+      "post": {
+        "tags": [
+          "Calendar"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiAssignCalendarToProfileDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiAssignCalendarToProfileDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiAssignCalendarToProfileDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Employee/Get/{id}": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Employee/GetAll": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeGetAllDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeGetAllDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeGetAllDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Employee/GetAll_V2": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeGetAllDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeGetAllDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmployeeGetAllDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Employee/GetAllWithChanges/{fromDate}": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiPersonWithChangesDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiPersonWithChangesDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiPersonWithChangesDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Employee/SetEmail/{id}/{newEmail}": {
+      "patch": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "newEmail",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Employee/UpdatePersonalDetails/{id}": {
+      "patch": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdatePersonalDetailsDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdatePersonalDetailsDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdatePersonalDetailsDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Employee/UpdateBankingDetails/{id}": {
+      "patch": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateBankingDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateBankingDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateBankingDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Employee/SetStatus/{id}/{status}": {
+      "patch": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ProfileStatusEnum"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Employee/UpdateEmployementDetails/{id}": {
+      "patch": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateEmploymentDetailsDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateEmploymentDetailsDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateEmploymentDetailsDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Employee/UpdateSalaryDetails/{id}": {
+      "patch": {
+        "tags": [
+          "Employee"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateSalaryDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateSalaryDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateSalaryDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/GetLeaveForPerson/{personId}/{fromDate}/{toDate}": {
+      "get": {
+        "tags": [
+          "Leave"
+        ],
+        "parameters": [
+          {
+            "name": "personId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonLeaveDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonLeaveDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonLeaveDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Schedule/GetLeaveStatisticsForOrganizationEntity/{entityType}/{entityId}/{fromDate}/{toDate}": {
+      "get": {
+        "tags": [
+          "Leave"
+        ],
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/LeaveStatisticsEntityType"
+            }
+          },
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiLeaveStatisticsDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiLeaveStatisticsDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiLeaveStatisticsDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Beta/Meeting/Get/{id}": {
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiMeetingDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiMeetingDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiMeetingDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Beta/Meeting/History/{id}": {
+      "get": {
+        "tags": [
+          "Meeting"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiMeetingDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiMeetingDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiMeetingDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Organisation/Get": {
+      "get": {
+        "tags": [
+          "Organisaton"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiOrganisationDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiOrganisationDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiOrganisationDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Organisation/GetAllChangesWithinTimeSpan/{fromDate}": {
+      "get": {
+        "tags": [
+          "Organisaton"
+        ],
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "logItemClass",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/LogItemClassEnum"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiChangeLogDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiChangeLogDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiChangeLogDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Schedule/CreateScheduleTemplate": {
+      "post": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleTemplateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleTemplateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleTemplateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/UpdateScheduleTemplate/{scheduleTemplateId}": {
+      "patch": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "scheduleTemplateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateScheduleTemplateDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateScheduleTemplateDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiUpdateScheduleTemplateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/GetScheduleTemplates": {
+      "get": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiScheduleTemplateDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiScheduleTemplateDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExternalApiScheduleTemplateDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Schedule/GetScheduleTemplate/{scheduleTemplateId}": {
+      "get": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "scheduleTemplateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiScheduleTemplateDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiScheduleTemplateDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiScheduleTemplateDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Schedule/SetScheduleTemplateStatus/{scheduleTemplateId}/{status}": {
+      "patch": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "scheduleTemplateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ScheduleTemplateStatus"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/AssignScheduleTemplateToPerson": {
+      "post": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleTemplateProfileDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleTemplateProfileDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleTemplateProfileDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/SetEndDateForScheduleTemplatePerson": {
+      "patch": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiSetEndDateForScheduleTemplatePersonDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiSetEndDateForScheduleTemplatePersonDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiSetEndDateForScheduleTemplatePersonDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/CreateScheduleDatesForPersonWithoutScheduleTemplate": {
+      "post": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleDatesForProfileDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleDatesForProfileDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiCreateScheduleDatesForProfileDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/DeleteScheduleDatesForPersonWithoutScheduleTemplate": {
+      "delete": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiDeleteScheduleDatesForProfileDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiDeleteScheduleDatesForProfileDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiDeleteScheduleDatesForProfileDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/GenerateScheduleDatesForProfile": {
+      "post": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiGenerateScheduleDatesForProfileDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiGenerateScheduleDatesForProfileDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExternalApiGenerateScheduleDatesForProfileDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/Schedule/GetVacationDaysForPerson/{personId}/{vacationYearStartDate}": {
+      "get": {
+        "tags": [
+          "Vacation"
+        ],
+        "parameters": [
+          {
+            "name": "personId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vacationYearStartDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonVacationDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonVacationDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonVacationDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Schedule/GetUsedVacationDaysForPerson/{personId}/{vacationYearStartDate}": {
+      "get": {
+        "tags": [
+          "Vacation"
+        ],
+        "parameters": [
+          {
+            "name": "personId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "vacationYearStartDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Api-Version",
+            "in": "header",
+            "description": "The requested API version",
+            "schema": {
+              "type": "string",
+              "default": "1.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonUsedVacationDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonUsedVacationDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExternalApiPersonUsedVacationDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BreakType": {
+        "enum": [
+          "Unpaid",
+          "Paid"
+        ],
+        "type": "string"
+      },
+      "CalendarDateType": {
+        "enum": [
+          "DayOff",
+          "PartialDayOff"
+        ],
+        "type": "string"
+      },
+      "CustomFieldAnswerDTO": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "value_Numeric": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "customFieldId": {
+            "type": "string",
+            "nullable": true
+          },
+          "customFieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customFieldType": {
+            "type": "string",
+            "nullable": true
+          },
+          "validFromDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "validToDate": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomFieldDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataType": {
+            "$ref": "#/components/schemas/CustomFieldEnum"
+          },
+          "subType": {
+            "type": "string",
+            "nullable": true
+          },
+          "sectionName": {
+            "type": "string",
+            "nullable": true
+          },
+          "options": {
+            "type": "string",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "historyEnabled": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomFieldEnum": {
+        "enum": [
+          "text",
+          "date",
+          "dropdown",
+          "url",
+          "boolean",
+          "number",
+          "decimalnum"
+        ],
+        "type": "string"
+      },
+      "DayEnum": {
+        "enum": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "type": "string"
+      },
+      "EmployeeGetAllDTO": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "nextPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "employees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiPersonDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExteralApiSubstituteProfileDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiAddressDTO": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "address2": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "address3": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "postCode": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiAssignCalendarToProfileDTO": {
+        "required": [
+          "calendarId",
+          "profileId"
+        ],
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "calendarId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiBankingDTO": {
+        "type": "object",
+        "properties": {
+          "bankName": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "nameOnAccount": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountName": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "clearingNumber": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "accountNumber": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "taxCode": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "ibanNumber": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "bankNumber": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "taxColumn": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiBenefitDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "frequency": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCalendarDTO": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "calendarDates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiCalendarDateDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCalendarDateDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "fromTime": {
+            "type": "string",
+            "nullable": true,
+            "example": "12:00"
+          },
+          "toTime": {
+            "type": "string",
+            "nullable": true,
+            "example": "12:00"
+          },
+          "calendarDateType": {
+            "$ref": "#/components/schemas/CalendarDateType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiChangeLogDTO": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "nullable": true
+          },
+          "itemClass": {
+            "type": "string",
+            "nullable": true
+          },
+          "columnName": {
+            "type": "string",
+            "nullable": true
+          },
+          "oldValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "newValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiChildrenDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "birthYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateCalendarDTO": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "calendarDates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiCreateCalendarDateDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateCalendarDateDTO": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "fromTime": {
+            "type": "string",
+            "nullable": true,
+            "example": "12:00"
+          },
+          "toTime": {
+            "type": "string",
+            "nullable": true,
+            "example": "12:00"
+          },
+          "calendarDateType": {
+            "$ref": "#/components/schemas/CalendarDateType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateScheduleDateBreakDTO": {
+        "type": "object",
+        "properties": {
+          "breakType": {
+            "$ref": "#/components/schemas/BreakType"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "12:00"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateScheduleDateDTO": {
+        "required": [
+          "date"
+        ],
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "scheduleDateBreaks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiCreateScheduleDateBreakDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateScheduleDatesForProfileDTO": {
+        "required": [
+          "profileId",
+          "scheduleDates"
+        ],
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "takePersonsCalendarIntoAccount": {
+            "type": "boolean"
+          },
+          "scheduleDates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiCreateScheduleDateDTO"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateScheduleTemplateDTO": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "externalSystemId": {
+            "maxLength": 128,
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleTemplateDays": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiCreateScheduleTemplateDayDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateScheduleTemplateDayBreakDTO": {
+        "type": "object",
+        "properties": {
+          "breakType": {
+            "$ref": "#/components/schemas/BreakType"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "12:00"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateScheduleTemplateDayDTO": {
+        "type": "object",
+        "properties": {
+          "dayEnum": {
+            "$ref": "#/components/schemas/DayEnum"
+          },
+          "weekOrder": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "scheduleTemplateDayBreaks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiCreateScheduleTemplateDayBreakDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiCreateScheduleTemplateProfileDTO": {
+        "required": [
+          "profileId",
+          "scheduleTemplateId",
+          "startDate",
+          "startScheduleTemplateDayId"
+        ],
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "scheduleTemplateId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "startScheduleTemplateDayId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiDeleteScheduleDatesForProfileDTO": {
+        "required": [
+          "profileId",
+          "scheduleDateToBeDeletedIds"
+        ],
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "scheduleDateToBeDeletedIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiEmploymentDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "locationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "noticePeriod": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "noticePeriodUnit": {
+            "type": "string",
+            "nullable": true
+          },
+          "employmentNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "vacationDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "role": {
+            "$ref": "#/components/schemas/ExternalApiRoleDTO"
+          },
+          "salaryReviewYear": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "approvalCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "costObject": {
+            "type": "string",
+            "nullable": true
+          },
+          "costCenter": {
+            "type": "string",
+            "nullable": true
+          },
+          "personelType": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiEmploymentHistoryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "typeOfEmployment": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeOfContract": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeOfWorkingTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "endDateOfProbaton": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "terminationReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "scopeInProcentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "scopeInHoursPerWeek": {
+            "type": "number",
+            "format": "double"
+          },
+          "substituteId": {
+            "type": "string",
+            "nullable": true
+          },
+          "substitute": {
+            "$ref": "#/components/schemas/ExteralApiSubstituteProfileDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiGenerateScheduleDatesForProfileDTO": {
+        "required": [
+          "fromDate",
+          "profileId",
+          "toDate"
+        ],
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiKpiDTO": {
+        "type": "object",
+        "properties": {
+          "kpiName": {
+            "type": "string",
+            "nullable": true
+          },
+          "kpiDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiLeaveDateDTO": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "leaveOccasions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiLeaveOccasionDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiLeaveOccasionBreaksDTO": {
+        "type": "object",
+        "properties": {
+          "breakMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "toTime": {
+            "type": "string",
+            "example": "12:00"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiLeaveOccasionDTO": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "leaveMinutes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "leaveMinutesWithUnpaidBreaksExcluded": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "leaveMinutesWithUnpaidBreaksExcludedMultipliedWithWorkingPercentage": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fromTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "toTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "leaveTypeCode": {
+            "$ref": "#/components/schemas/LeaveTypeIntegrationCode"
+          },
+          "leaveTypeCodeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "workingPercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "leaveOccasionBreaks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiLeaveOccasionBreaksDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiLeaveStatisticsCategoryDTO": {
+        "type": "object",
+        "properties": {
+          "leaveTypeIntegrationCode": {
+            "$ref": "#/components/schemas/LeaveTypeIntegrationCode"
+          },
+          "leaveStatisticsPersons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiLeaveStatisticsPersonDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiLeaveStatisticsDTO": {
+        "type": "object",
+        "properties": {
+          "entityType": {
+            "$ref": "#/components/schemas/LeaveStatisticsEntityType"
+          },
+          "entityId": {
+            "type": "string",
+            "nullable": true
+          },
+          "entityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "leaveStatisticsCategories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiLeaveStatisticsCategoryDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiLeaveStatisticsPersonDTO": {
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "gender": {
+            "type": "string",
+            "nullable": true
+          },
+          "numberOfCalendarDaysWithLeave": {
+            "type": "number",
+            "format": "double"
+          },
+          "leaveHours": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiLocationDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeZone": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiMeetingDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "agenda": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "type": "string",
+            "nullable": true
+          },
+          "timeZone": {
+            "type": "string",
+            "nullable": true
+          },
+          "meetingDuration": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "completedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "complete": {
+            "type": "boolean"
+          },
+          "meetingTemplateName": {
+            "type": "string",
+            "nullable": true
+          },
+          "meetingTemplateId": {
+            "type": "string",
+            "nullable": true
+          },
+          "formId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "guestIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "blobFileIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "saveTo": {
+            "type": "string",
+            "nullable": true
+          },
+          "leadershipAccess": {
+            "type": "string",
+            "nullable": true
+          },
+          "meetingHiddenIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "formHiddenIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "formVisibleToAttendees": {
+            "type": "boolean"
+          },
+          "ownerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentId": {
+            "type": "string",
+            "nullable": true
+          },
+          "folderId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiOrganisationDTO": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamDTOs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiTeamDTO"
+            },
+            "nullable": true
+          },
+          "locationDTOs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiLocationDTO"
+            },
+            "nullable": true
+          },
+          "customFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFieldDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiPersonDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "inService": {
+            "type": "boolean"
+          },
+          "personDetails": {
+            "$ref": "#/components/schemas/ExternalApiPersonalDetailsDTO"
+          },
+          "banking": {
+            "$ref": "#/components/schemas/ExternalApiBankingDTO"
+          },
+          "employmentDetails": {
+            "$ref": "#/components/schemas/ExternalApiEmploymentDetailsDTO"
+          },
+          "employmentHistories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiEmploymentHistoryDTO"
+            },
+            "nullable": true
+          },
+          "relationship": {
+            "$ref": "#/components/schemas/ExternalApiRelationshipDTO"
+          },
+          "salaries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiSalaryDTO"
+            },
+            "nullable": true
+          },
+          "roleHistories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiRoleHistoryDTO"
+            },
+            "nullable": true
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiChildrenDTO"
+            },
+            "nullable": true
+          },
+          "boardMonthlyFee": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalOtherSalaryDTO"
+            },
+            "nullable": true
+          },
+          "severancePay": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalOtherSalaryDTO"
+            },
+            "nullable": true
+          },
+          "salaryDeduction": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalOtherSalaryDTO"
+            },
+            "nullable": true
+          },
+          "salarySupplement": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalOtherSalaryDTO"
+            },
+            "nullable": true
+          },
+          "salaryExchange": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalOtherSalaryDTO"
+            },
+            "nullable": true
+          },
+          "reservationAmount": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalOtherSalaryDTO"
+            },
+            "nullable": true
+          },
+          "withholdingTax": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalOtherSalaryWithholdingTaxDTO"
+            },
+            "nullable": true
+          },
+          "benefits": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiBenefitDTO"
+            },
+            "nullable": true
+          },
+          "customFieldAnswers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFieldAnswerDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiPersonLeaveDTO": {
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "leaveDates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiLeaveDateDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiPersonUsedVacationDTO": {
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "vacationCalendarYearStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "vacationCalendarYearEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "usedPayedVacationDays": {
+            "type": "number",
+            "format": "double"
+          },
+          "usedUnpayedVacationDays": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiPersonVacationDTO": {
+        "type": "object",
+        "properties": {
+          "profileId": {
+            "type": "string",
+            "nullable": true
+          },
+          "vacationCalendarYearStartDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "vacationCalendarYearEndDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "totalVacationDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "payedVacationDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unpayedVacationDays": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiPersonWithChangesDTO": {
+        "type": "object",
+        "properties": {
+          "person": {
+            "$ref": "#/components/schemas/ExternalApiPersonDTO"
+          },
+          "changeLogs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiChangeLogDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiPersonalDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "maxLength": 24,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "privatePhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "personalEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "personalNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "biography": {
+            "type": "string",
+            "nullable": true
+          },
+          "imgUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dateOfRegistration": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "interests": {
+            "type": "string",
+            "nullable": true
+          },
+          "gender": {
+            "maxLength": 24,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "competence": {
+            "type": "string",
+            "nullable": true
+          },
+          "favouriteFood": {
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "type": "string",
+            "nullable": true
+          },
+          "preferredLanguage": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/ExternalApiAddressDTO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiRelationshipDTO": {
+        "type": "object",
+        "properties": {
+          "managerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "buddyId": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryTeamId": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "managedStaffIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "departmentsIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "legalEntitiesIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiRoleDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiKpiDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiRoleHistoryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "priorExperienceYears": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "priorExperienceMonths": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiKpiDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiSalaryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salaryStartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "salaryEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "payFrequency": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "paymentGroup": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiScheduleTemplateDTO": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "externalSystemId": {
+            "maxLength": 128,
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/ScheduleTemplateStatus"
+          },
+          "scheduleTemplateDays": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiScheduleTemplateDayDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiScheduleTemplateDayBreakDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "breakType": {
+            "$ref": "#/components/schemas/BreakType"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "12:00"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiScheduleTemplateDayDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "dayEnum": {
+            "$ref": "#/components/schemas/DayEnum"
+          },
+          "weekOrder": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "scheduleTemplateDayBreaks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiScheduleTemplateDayBreakDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiSetEndDateForScheduleTemplatePersonDTO": {
+        "required": [
+          "endDate",
+          "scheduleTemplateProfileId"
+        ],
+        "type": "object",
+        "properties": {
+          "scheduleTemplateProfileId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiTeamDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "parentTeamId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdateBankingDTO": {
+        "type": "object",
+        "properties": {
+          "bankName": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "nameOnAccount": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountName": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "clearingNumber": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "accountNumber": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "bankNumber": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "taxCode": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "ibanNumber": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdateCalendarDTO": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdateCalendarDateDTO": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "fromTime": {
+            "type": "string",
+            "nullable": true,
+            "example": "12:00"
+          },
+          "toTime": {
+            "type": "string",
+            "nullable": true,
+            "example": "12:00"
+          },
+          "calendarDateType": {
+            "$ref": "#/components/schemas/CalendarDateType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdateEmploymentDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "noticePeriod": {
+            "$ref": "#/components/schemas/NoticePeriodEnum"
+          },
+          "employmentNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "vacationDays": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationId": {
+            "type": "string",
+            "nullable": true
+          },
+          "managerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "buddyId": {
+            "type": "string",
+            "nullable": true
+          },
+          "primaryTeamId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdatePersonalDetailsDTO": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "maxLength": 24,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "personalEmail": {
+            "maxLength": 300,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "personalNumber": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "biography": {
+            "maxLength": 1024,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "imgUrl": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "interests": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "gender": {
+            "$ref": "#/components/schemas/GenderEnum"
+          },
+          "competence": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "favouriteFood": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "preferredLanguage": {
+            "$ref": "#/components/schemas/LanguageEnum"
+          },
+          "address": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "address2": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "address3": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "postCode": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "maxLength": 64,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdateSalaryDTO": {
+        "type": "object",
+        "properties": {
+          "salaryStartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "salaryEndDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "amount": {
+            "type": "string",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "payFrequency": {
+            "$ref": "#/components/schemas/SalaryPayFrequency"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdateScheduleTemplateDTO": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "externalSystemId": {
+            "maxLength": 128,
+            "type": "string",
+            "nullable": true
+          },
+          "scheduleTemplateDays": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiUpdateScheduleTemplateDayDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdateScheduleTemplateDayBreakDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "breakType": {
+            "$ref": "#/components/schemas/BreakType"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "12:00"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalApiUpdateScheduleTemplateDayDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "dayEnum": {
+            "$ref": "#/components/schemas/DayEnum"
+          },
+          "weekOrder": {
+            "maximum": 2147483647,
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "startTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "endTime": {
+            "type": "string",
+            "example": "12:00"
+          },
+          "scheduleTemplateDayBreaks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExternalApiUpdateScheduleTemplateDayBreakDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalOtherSalaryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true
+          },
+          "payFrequency": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExternalOtherSalaryWithholdingTaxDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "taxPercentage": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GenderEnum": {
+        "enum": [
+          "Male",
+          "Female",
+          "NonBinary",
+          "PreferNotToSay"
+        ],
+        "type": "string"
+      },
+      "LanguageEnum": {
+        "enum": [
+          "sv",
+          "en",
+          "fi"
+        ],
+        "type": "string"
+      },
+      "LeaveStatisticsEntityType": {
+        "enum": [
+          "LegalEntity",
+          "Department",
+          "Team",
+          "Location",
+          "Manager",
+          "Role",
+          "Tag",
+          "EmploymentType",
+          "WholeOrganization"
+        ],
+        "type": "string"
+      },
+      "LeaveTypeIntegrationCode": {
+        "enum": [
+          "SickLeave",
+          "PayedVacation",
+          "CareOfChildren",
+          "ParentalLeave",
+          "LeaveOfAbsence",
+          "WorkInjury",
+          "UnionTraining",
+          "Flexitime",
+          "OtherAbsences",
+          "PregnancyBenefit",
+          "CompensatoryLeave",
+          "MilitaryService",
+          "CaringForRelative",
+          "OnLeave",
+          "TemporaryDismissed",
+          "SwedishForImmigrants",
+          "OptionalDay",
+          "ExemptedFromWork",
+          "SickOB1",
+          "SickOB2",
+          "SickOB3",
+          "SickOB4",
+          "SickOB5",
+          "SickOB6",
+          "SickOB7",
+          "CarrierOfInfection",
+          "UnpayedVacation"
+        ],
+        "type": "string"
+      },
+      "LogItemClassEnum": {
+        "enum": [
+          "Profile",
+          "RoleHistory",
+          "EmploymentHistory",
+          "SalaryHistory"
+        ],
+        "type": "string"
+      },
+      "NoticePeriodEnum": {
+        "enum": [
+          "OneWeeks",
+          "TwoWeeks",
+          "ThreeWeeks",
+          "OneMonths",
+          "TwoMonths",
+          "ThreeMonths",
+          "FourMonths",
+          "FiveMonths",
+          "SixMonths"
+        ],
+        "type": "string"
+      },
+      "ProfileStatusEnum": {
+        "enum": [
+          "Active",
+          "PreviousEmployee",
+          "Unconfirmed",
+          "Invited"
+        ],
+        "type": "string"
+      },
+      "SalaryPayFrequency": {
+        "enum": [
+          "Annually",
+          "Monthly6",
+          "Quarterly",
+          "Monthly",
+          "BiWeekly",
+          "Weekly",
+          "Daily",
+          "Hourly",
+          "OneOff"
+        ],
+        "type": "string"
+      },
+      "ScheduleTemplateStatus": {
+        "enum": [
+          "Draft",
+          "Active",
+          "Retired"
+        ],
+        "type": "string"
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "name": "X-Api-Key",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKey": [ ]
+    }
+  ]
+}
