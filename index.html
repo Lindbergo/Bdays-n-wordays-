@@ -202,7 +202,7 @@
     </p>
     <div class="field">
       <label>API Base URL</label>
-      <input id="i-url" type="text" placeholder="https://api.evity.com"
+      <input id="i-url" type="text" placeholder="https://evity-api.azurewebsites.net"
              autocomplete="off" spellcheck="false" />
       <div class="hint">Root URL without trailing slash</div>
     </div>
@@ -308,8 +308,10 @@ const cfg = {
 // ── Overlay / settings ────────────────────────────────────────
 const overlay = document.getElementById('overlay');
 
+const DEFAULT_URL = 'https://evity-api.azurewebsites.net';
+
 function showSettings() {
-  document.getElementById('i-url').value = cfg.url;
+  document.getElementById('i-url').value = cfg.url || DEFAULT_URL;
   document.getElementById('i-key').value = cfg.key;
   overlay.classList.remove('hidden');
 }
