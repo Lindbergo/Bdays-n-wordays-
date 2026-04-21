@@ -197,15 +197,9 @@
   <div class="modal">
     <h2>Connect to Evity</h2>
     <p>
-      Enter your Evity API credentials. They are saved locally in your browser
-      and never sent anywhere except directly to your Evity API.
+      Enter your Evity API key. It is saved locally in your browser
+      and never sent anywhere except directly to the Evity API.
     </p>
-    <div class="field">
-      <label>API Base URL</label>
-      <input id="i-url" type="text" placeholder="https://evity-api.azurewebsites.net"
-             autocomplete="off" spellcheck="false" />
-      <div class="hint">Root URL without trailing slash</div>
-    </div>
     <div class="field">
       <label>API Key (X-Api-Key)</label>
       <input id="i-key" type="password" placeholder="Paste your API key here"
@@ -295,23 +289,18 @@ const BD_MILESTONES = [20, 30, 40, 50, 60, 70];
 const WD_TARGET     = 1000;
 
 // ── Config (localStorage) ─────────────────────────────────────
+const API_URL = 'https://evity-api.azurewebsites.net';
+
 const cfg = {
-  get url() { return (localStorage.getItem('ev_url') || '').replace(/\/$/, ''); },
   get key() { return localStorage.getItem('ev_key') || ''; },
-  save(url, key) {
-    localStorage.setItem('ev_url', url.replace(/\/$/, ''));
-    localStorage.setItem('ev_key', key);
-  },
-  ok() { return !!(this.url && this.key); }
+  save(key) { localStorage.setItem('ev_key', key); },
+  ok() { return !!this.key; }
 };
 
 // ── Overlay / settings ────────────────────────────────────────
 const overlay = document.getElementById('overlay');
 
-const DEFAULT_URL = 'https://evity-api.azurewebsites.net';
-
 function showSettings() {
-  document.getElementById('i-url').value = cfg.url || DEFAULT_URL;
   document.getElementById('i-key').value = cfg.key;
   overlay.classList.remove('hidden');
 }
@@ -319,10 +308,9 @@ function showSettings() {
 document.getElementById('settingsBtn').addEventListener('click', showSettings);
 
 document.getElementById('saveBtn').addEventListener('click', () => {
-  const url = document.getElementById('i-url').value.trim();
   const key = document.getElementById('i-key').value.trim();
-  if (!url || !key) { alert('Both fields are required.'); return; }
-  cfg.save(url, key);
+  if (!key) { alert('API key is required.'); return; }
+  cfg.save(key);
   overlay.classList.add('hidden');
   loadAll();
 });
@@ -345,7 +333,7 @@ async function fetchAll() {
   let page = 0;
 
   for (;;) {
-    const res = await fetch(`${cfg.url}/Employee/GetAll_V2?page=${page}`, {
+    const res = await fetch(`${API_URL}/Employee/GetAll_V2?page=${page}`, {
       headers: {
         'X-Api-Key':     cfg.key,
         'X-Api-Version': '1.0',
