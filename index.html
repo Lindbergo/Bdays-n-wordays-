@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Birthdays &amp; Workday Milestones</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -232,7 +232,8 @@
       border-radius: 6px; font-size: .75rem; font-family: inherit;
       cursor: pointer; transition: all .15s; white-space: nowrap;
     }
-    .btn-export:hover { background: var(--bg); border-color: var(--blue); color: var(--blue); }
+    .btn-export:hover    { background: var(--bg); border-color: var(--blue); color: var(--blue); }
+    .btn-export:disabled { opacity: .4; cursor: not-allowed; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -298,7 +299,7 @@
           <button class="filter-btn" data-days="365">1y</button>
           <button class="filter-btn active" data-days="all">All</button>
         </div>
-        <button class="btn-export" id="exportBd">↓ xlsx</button>
+        <button class="btn-export" id="exportBd" disabled>↓ xlsx</button>
       </div>
       <table>
         <thead>
@@ -324,7 +325,7 @@
       <div class="card-head">
         <h2>Progress to 1 000 employment days</h2>
         <span class="pill" id="wdPill">—</span>
-        <button class="btn-export" id="exportWd">↓ xlsx</button>
+        <button class="btn-export" id="exportWd" disabled>↓ xlsx</button>
       </div>
       <table>
         <thead>
@@ -357,6 +358,7 @@ let bdDaysFilter = Infinity;
 let searchQuery  = '';
 let lastBdRows   = [];
 let lastWdRows   = [];
+let isLoading    = false;
 
 // ── Config (localStorage) ─────────────────────────────────────
 const API_URL = 'https://evity-api.azurewebsites.net';
@@ -705,7 +707,12 @@ function renderWorkdays(employees) {
 
 // ── Load ──────────────────────────────────────────────────────
 function setLoading() {
+  isLoading    = true;
+  lastBdRows   = [];
+  lastWdRows   = [];
   document.getElementById('refreshBtn').disabled = true;
+  document.getElementById('exportBd').disabled   = true;
+  document.getElementById('exportWd').disabled   = true;
   document.getElementById('bdBody').innerHTML =
     `<tr class="state-row"><td colspan="6"><div class="loader"></div></td></tr>`;
   document.getElementById('wdBody').innerHTML =
@@ -717,6 +724,7 @@ function setLoading() {
 
 async function loadAll() {
   if (!cfg.ok()) { showSettings(); return; }
+  if (isLoading) return;
   setLoading();
   try {
     const all       = await fetchAll();
@@ -743,7 +751,10 @@ async function loadAll() {
       `<tr class="state-row"><td colspan="5">Failed to load data.</td></tr>`;
     console.error(err);
   } finally {
+    isLoading = false;
     document.getElementById('refreshBtn').disabled = false;
+    document.getElementById('exportBd').disabled   = lastBdRows.length === 0;
+    document.getElementById('exportWd').disabled   = lastWdRows.length === 0;
   }
 }
 
