@@ -76,7 +76,7 @@
     }
     .h-title { font-size: .95rem; font-weight: 700; letter-spacing: -.01em; }
     .h-right  { display: flex; align-items: center; gap: 10px; }
-    .h-stamp  { font-size: .72rem; opacity: .6; }
+    .h-stamp  { font-size: .75rem; opacity: .8; }
     .btn-ghost {
       padding: 5px 13px; border: 1px solid rgba(255,255,255,.25);
       background: rgba(255,255,255,.1); color: #fff; border-radius: 6px;
@@ -580,9 +580,14 @@ async function loadAll() {
   if (!cfg.ok()) { showSettings(); return; }
   setLoading();
   try {
-    const employees = await fetchAll();
+    const all       = await fetchAll();
+    const employees = all.filter(e =>
+      (e.status ?? '').toLowerCase() !== 'previous employee'
+    );
+    const filtered  = all.length - employees.length;
     document.getElementById('empCount').textContent =
-      employees.length + ' employees loaded';
+      employees.length + ' active employees' +
+      (filtered ? ` (${filtered} previous employees excluded)` : '');
     renderBirthdays(employees);
     renderWorkdays(employees);
     document.getElementById('stamp').textContent =
