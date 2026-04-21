@@ -167,8 +167,7 @@
     .b-warm     { background: #fff3bf; color: #7c4f00; }
     .b-cool     { background: #dbe4ff; color: #364fc7; }
     .b-done     { background: #d3f9d8; color: #1a5c27; }
-    .b-inactive { background: #f3f4f6; color: #6b7280; font-size: .68rem; }
-    .b-ms       { background: var(--blue); color: #fff; font-size: .72rem; }
+.b-ms       { background: var(--blue); color: #fff; font-size: .72rem; }
 
     /* ── Progress bar ──────────────────────────────────────── */
     .prog-wrap { display: flex; align-items: center; gap: 8px; }
@@ -513,11 +512,16 @@ function daysBetween(a, b) {
   return Math.round((b - a) / 86_400_000);
 }
 
+function clampedDate(year, month, day) {
+  const lastDay = new Date(year, month + 1, 0).getDate();
+  return new Date(year, month, Math.min(day, lastDay));
+}
+
 function currentAge(dob) {
   const t = todayMidnight();
   const b = new Date(dob);
   let age = t.getFullYear() - b.getFullYear();
-  if (t < new Date(t.getFullYear(), b.getMonth(), b.getDate())) age--;
+  if (t < clampedDate(t.getFullYear(), b.getMonth(), b.getDate())) age--;
   return age;
 }
 
@@ -525,7 +529,7 @@ function nextBdMilestone(dob) {
   const t = todayMidnight();
   const b = new Date(dob);
   for (const m of BD_MILESTONES) {
-    const d    = new Date(b.getFullYear() + m, b.getMonth(), b.getDate());
+    const d    = clampedDate(b.getFullYear() + m, b.getMonth(), b.getDate());
     const days = daysBetween(t, d);
     if (days >= 0) return { milestoneAge: m, milestoneDate: d, daysUntil: days };
   }
@@ -587,7 +591,6 @@ function renderBirthdays(employees) {
     if (!ms) continue;
     rows.push({
       name:         fullName(emp.personDetails),
-      inService:    emp.inService,
       dob,
       currentAge:   currentAge(dob),
       milestoneAge: ms.milestoneAge,
@@ -612,9 +615,7 @@ function renderBirthdays(employees) {
 
   for (const r of visible) {
     const [cls, lbl] = daysAwayBadge(r.daysUntil);
-    const namePart = r.inService
-      ? `<span class="fw6">${esc(r.name)}</span>`
-      : `<span class="fw6 dim">${esc(r.name)}</span> <span class="badge b-inactive">inactive</span>`;
+    const namePart = `<span class="fw6">${esc(r.name)}</span>`;
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -639,7 +640,6 @@ function renderWorkdays(employees) {
     const days = totalEmployedDays(hs);
     rows.push({
       name:      fullName(emp.personDetails),
-      inService: emp.inService,
       days,
       remaining: WD_TARGET - days,
       projDate:  projMilestoneDate(hs, days)
@@ -670,9 +670,7 @@ function renderWorkdays(employees) {
     const pct       = Math.min(100, (r.days / WD_TARGET) * 100);
     const [cls, lbl] = daysRemBadge(r.remaining);
     const isDone    = r.remaining <= 0;
-    const namePart  = r.inService
-      ? `<span class="fw6">${esc(r.name)}</span>`
-      : `<span class="fw6 dim">${esc(r.name)}</span> <span class="badge b-inactive">inactive</span>`;
+    const namePart  = `<span class="fw6">${esc(r.name)}</span>`;
     const projCell  = isDone
       ? '—'
       : (r.projDate ? `<span class="mono">${fmtDate(r.projDate)}</span>` : '<span class="dim">—</span>');
