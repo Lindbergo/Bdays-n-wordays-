@@ -253,6 +253,11 @@
       <input id="i-key" type="password" placeholder="Paste your API key here"
              autocomplete="off" />
     </div>
+    <div class="field">
+      <label>Workday milestone target (days)</label>
+      <input id="i-wd-target" type="number" min="1" placeholder="1000" />
+      <div class="hint">Default: 1000 days</div>
+    </div>
     <button class="btn-primary" id="saveBtn">Save &amp; Load Data</button>
   </div>
 </div>
@@ -348,8 +353,8 @@
 'use strict';
 
 // ── Constants ─────────────────────────────────────────────────
-const BD_MILESTONES = [20, 30, 40, 50, 60, 70];
-const WD_TARGET     = 1000;
+const BD_MILESTONES = Array.from({ length: 10 }, (_, i) => 10 + i * 10);
+const WD_TARGET_DEFAULT = 1000;
 
 // ── Client state ──────────────────────────────────────────────
 let allEmployees = [];
@@ -363,16 +368,23 @@ let isLoading    = false;
 const API_URL = 'https://evity-api.azurewebsites.net';
 
 const cfg = {
-  get key() { return localStorage.getItem('ev_key') || ''; },
-  save(key) { localStorage.setItem('ev_key', key); },
+  get key()      { return localStorage.getItem('ev_key') || ''; },
+  get wdTarget() { return parseInt(localStorage.getItem('ev_wd_target'), 10) || WD_TARGET_DEFAULT; },
+  save(key, wdTarget) {
+    localStorage.setItem('ev_key', key);
+    localStorage.setItem('ev_wd_target', wdTarget);
+  },
   ok() { return !!this.key; }
 };
+
+const WD_TARGET = { valueOf() { return cfg.wdTarget; } };
 
 // ── Overlay / settings ────────────────────────────────────────
 const overlay = document.getElementById('overlay');
 
 function showSettings() {
   document.getElementById('i-key').value = cfg.key;
+  document.getElementById('i-wd-target').value = cfg.wdTarget;
   overlay.classList.remove('hidden');
 }
 
@@ -387,7 +399,8 @@ overlay.addEventListener('click', e => { if (e.target === overlay) closeSettings
 function submitSettings() {
   const key = document.getElementById('i-key').value.trim();
   if (!key) { alert('API key is required.'); return; }
-  cfg.save(key);
+  const wdTarget = parseInt(document.getElementById('i-wd-target').value, 10) || WD_TARGET_DEFAULT;
+  cfg.save(key, wdTarget);
   overlay.classList.add('hidden');
   loadAll();
 }
